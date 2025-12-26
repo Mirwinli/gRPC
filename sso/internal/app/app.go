@@ -17,7 +17,6 @@ type App struct {
 func New(
 	log *slog.Logger,
 	grpcPort int,
-	storagePath string,
 	tokenTTL time.Duration,
 	db *pgxpool.Pool,
 ) *App {

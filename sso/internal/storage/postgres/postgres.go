@@ -45,7 +45,7 @@ func (s *Storage) User(ctx context.Context, email string) (models.User, error) {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return models.User{}, fmt.Errorf("%s: %w", op, storage.ErrUserNotFound)
 		}
-		return models.User{}, fmt.Errorf("%s: %w", op, err)
+		return models.User{}, fmt.Errorf("%s: scan failed: %v", op, err)
 	}
 	return user, nil
 }
@@ -70,7 +70,7 @@ func (s *Storage) App(ctx context.Context, appID int) (models.App, error) {
 
 	if err := s.db.QueryRow(
 		ctx,
-		"SELECT name id secret FROM apps WHERE id=$1", appID,
+		"SELECT name,id,secret FROM apps WHERE id=$1", appID,
 	).Scan(&app.Name, &app.ID, &app.Secret); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return models.App{}, storage.ErrAppNotFound

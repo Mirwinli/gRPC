@@ -41,7 +41,7 @@ func main() {
 	log.Info("connected to database", slog.String("url", os.Getenv("DATABASE_URL")))
 	log.Info("starting application", slog.Any("config", cfg))
 
-	application := app.New(log, cfg.GRPC.Port, cfg.Storage_path, cfg.TokenTTL, conn)
+	application := app.New(log, cfg.GRPC.Port, cfg.TokenTTL, conn)
 
 	go application.GRPCS.MustRun()
 
